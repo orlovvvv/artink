@@ -4,7 +4,10 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 
 import * as UserService from "./user.service"
+import jwt from 'jsonwebtoken';
 
+const jwtSecret = process.env.TOKEN_SECRET;
+const moment = require("moment")
 export const userRouter = express.Router();
 
 // Lista wszystkich użytkowników
@@ -39,8 +42,11 @@ userRouter.post('/', body('firstName').isString(), body('lastName').isString(), 
         if (!errors.isEmpty) {
             return response.status(400).json({ errors: errors.array() });
         }
-        request.body.password = (bcrypt.hash(request.body.password, 10))
         try {
+            const date = moment().valueOf().toString()
+            request.body.password = (bcrypt.hash(request.body.password, 10)).toString()
+            request.body.token = jwt.sign(date, jwtSecret!).toString()
+            console.log(date)
             const user = request.body
             const newUser = await UserService.createUser(user)
             return response.status(201).json(newUser)
@@ -59,9 +65,14 @@ userRouter.post("/login", body('email').isString(), body('password').isString(),
         }
         request.body.password = (bcrypt.hash(request.body.password, 10))
         try {
+            const date = moment().valueOf().toString()
             const user = request.body
             const loggedUser = await UserService.loginUser(user.email, user.password);
-            return response.status(200).json(loggedUser)
+
+            return (
+                // Po poprawnym zalogowaniu utwórz nowy token dla użytkownika i zwróć go w odpowiedzi
+                UserService.updateToken(user.id, user.email, jwt.sign(date, jwtSecret!).toString()),
+                response.status(200).json(loggedUser.token))
         } catch (error: any) {
             return response.status(401).json(error.message)
         }

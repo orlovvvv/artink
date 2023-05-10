@@ -59,7 +59,20 @@ export const loginUser = async (email: string, password: string): Promise<User> 
             lastName: true,
             email: true,
             password: false,
-            role: true
+            role: true,
+            token: true
+        }
+    })
+}
+
+export const updateToken = async (id: string, email: string, token: string): Promise<User> => {
+    return db.user.update({
+        where: {
+            id,
+            email
+        },
+        data: {
+            token: token
         }
     })
 }
@@ -67,7 +80,7 @@ export const loginUser = async (email: string, password: string): Promise<User> 
 // Dodaj użytkownika
 
 export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
-    const { firstName, lastName, email, password, role } = user
+    const { firstName, lastName, email, password, role, token } = user
     return db.user.create({
         data: {
             firstName,
@@ -75,7 +88,7 @@ export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
             email,
             password: password!,
             role: Role[role as keyof typeof Role],
-            token: ''
+            token: token as string
         },
         select: {
             id: true,
