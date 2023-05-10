@@ -3,11 +3,11 @@ import { Role } from "@prisma/client";
 
 type User = {
     id: string
-    email: string
-    firstName: string
-    lastName: string
+    email?: string
+    firstName?: string
+    lastName?: string
     password?: string
-    role: string
+    role?: string
     token?: string
 }
 
@@ -55,11 +55,11 @@ export const loginUser = async (email: string, password: string): Promise<User> 
         },
         select: {
             id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
+            firstName: false,
+            lastName: false,
+            email: false,
             password: false,
-            role: true,
+            role: false,
             token: true
         }
     })
@@ -83,9 +83,9 @@ export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
     const { firstName, lastName, email, password, role, token } = user
     return db.user.create({
         data: {
-            firstName,
-            lastName,
-            email,
+            firstName: firstName!,
+            lastName: lastName!,
+            email: email!,
             password: password!,
             role: Role[role as keyof typeof Role],
             token: token as string
@@ -108,9 +108,9 @@ export const updateUser = async (user: Omit<User, 'id'>, id: string): Promise<Us
             id,
         },
         data: {
-            firstName,
-            lastName,
-            email,
+            firstName: firstName!,
+            lastName: lastName!,
+            email: email!,
             password: password!,
             role: Role[role as keyof typeof Role],
         },
