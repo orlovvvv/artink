@@ -23,7 +23,7 @@ userRouter.get('/', async (request: Request, response: Response) => {
 
 // Użytkownik po ID
 userRouter.get('/:id', async (request: Request, response: Response) => {
-    const id: string = request.body.id
+    const id: string = request.body.id as string
     try {
         const user = await UserService.getUser(id)
         if (user) {
@@ -98,7 +98,7 @@ userRouter.put("/:id", body('firstName').isString(), body('lastName').isString()
 
 // Usunięcie użytkownika
 userRouter.delete('/:id', async (request: Request, response: Response) => {
-    const id: string = request.params.id
+    const id: string = request.body.id as string
     try {
         await UserService.deleteUser(id)
         return response.status(204).json("User has been successfully deleted")

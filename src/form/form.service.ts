@@ -21,7 +21,7 @@ export const listForms = async (): Promise<Form[]> => {
 }
 // Formularz po ID
 export const getForm = async (id: string): Promise<Form | null> => {
-    const user = db.form.findUnique({
+    const user = db.form.findUniqueOrThrow({
         where: {
             id,
         },
@@ -55,9 +55,8 @@ export const createForm = async (form: Omit<Form, 'id'>): Promise<Form> => {
     })
 }
 
-
 export const deleteForm = async (id: string): Promise<void> => {
-    await db.user.delete({
+    await db.form.delete({
         where: {
             id,
         }

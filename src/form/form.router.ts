@@ -18,7 +18,7 @@ formRouter.get('/', async (request: Request, response: Response) => {
 
 // Formularz po ID
 formRouter.get('/:id', async (request: Request, response: Response) => {
-    const id: string = request.body.id
+    const id: string = request.body.id as string
     try {
         const form = await FormService.getForm(id)
         if (form) {
@@ -49,7 +49,7 @@ formRouter.post('/', body('name').isString(), body('email').isString(), body('st
 
 // Usunięcie formularza
 formRouter.delete('/:id', async (request: Request, response: Response) => {
-    const id: string = request.params.id
+    const id: string = request.body.id as string
     try {
         await FormService.deleteForm(id)
         return response.status(204).json("Form has been successfully deleted")
