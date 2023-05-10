@@ -42,11 +42,10 @@ userRouter.post('/', body('firstName').isString(), body('lastName').isString(), 
         if (!errors.isEmpty) {
             return response.status(400).json({ errors: errors.array() });
         }
+        const date = moment().valueOf().toString()
+        request.body.password = (await (bcrypt.hash(request.body.password, 10))).toString()
+        request.body.token = jwt.sign(date, jwtSecret!).toString()
         try {
-            const date = moment().valueOf().toString()
-            request.body.password = (bcrypt.hash(request.body.password, 10)).toString()
-            request.body.token = jwt.sign(date, jwtSecret!).toString()
-            console.log(date)
             const user = request.body
             const newUser = await UserService.createUser(user)
             return response.status(201).json(newUser)
