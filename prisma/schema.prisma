@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  firstName    String
+  lastName     String
+  password     String
+  role         Role          @default(USER)
+  token        String        @unique
+  appointments Appointment[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Appointment {
+  id        String  @id @default(uuid())
+  firstName String
+  lastName  String
+  visitDate String  @unique
+  email     String
+  service   Service @default(Tatto)
+  notes     String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+}
+
+enum Service {
+  Tatto            @map("Tatuaż")
+  Piercing
+  Permament_makeup @map("Makijaż permanenty")
+}
+
+model Form {
+  id      String @id @default(uuid())
+  name    String
+  email   String
+  content String
+}
