@@ -6,6 +6,7 @@
     "dev": "nodemon src/index.ts"
   },
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.0",
     "@prisma/client": "4.13.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",

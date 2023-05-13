@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 
 import * as UserService from "./user.service"
 import jwt from 'jsonwebtoken';
+import { createId } from '../utils/id.generator';
 
 const jwtSecret = process.env.TOKEN_SECRET;
 const moment = require("moment")
@@ -70,7 +71,7 @@ userRouter.post("/login", body('email').isString(), body('password').isString(),
 
             return (
                 // Po poprawnym zalogowaniu utwórz nowy token dla użytkownika i zwróć go w odpowiedzi
-                UserService.updateToken(user.id, user.email, jwt.sign(date, jwtSecret!).toString()),
+                UserService.updateToken(user.id, user.email, jwt.sign(createId(), jwtSecret!).toString()),
                 response.status(200).json(loggedUser))
         } catch (error: any) {
             return response.status(401).json(error.message)
