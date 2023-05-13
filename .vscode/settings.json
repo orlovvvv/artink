@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/b2ff7207-e4a1-4c83-b23b-83ae1e37609b/resourceGroups/ArtInk/providers/Microsoft.Web/sites/ArtInk-Backend",
+    "appService.deploySubpath": "."
+}

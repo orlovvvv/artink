@@ -31,5 +31,3 @@ app.listen(PORT, () => {
     `App listening on http://localhost:${PORT}`
   )
 })
-
-module.exports = app;
