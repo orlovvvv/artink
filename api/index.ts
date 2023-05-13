@@ -19,7 +19,7 @@ const app = express();
 app.use(cors())
 app.use(express.urlencoded())
 app.get('/', (_req: Request, res: Response) => {
-  return res.send('<h1>Aplikacja ArtInk</h1>')
+  return res.send('<h1>Witaj w API Aplikacji ArtInk</h1>')
 })
 app.use("/api/users", userRouter)
 app.use("/api/appointments", appointmentRouter)

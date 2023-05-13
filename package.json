@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon api/index.ts"
+    "dev": "ts-node api/index.ts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.0",
